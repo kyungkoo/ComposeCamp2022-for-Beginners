@@ -40,8 +40,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent { 
             HappyBirthdayTheme {
-                Surface {
-                    BirthdayGreetingWithText(message = "Happy Birthday Sam!", from = "- from emma")
+                Surface(color =  MaterialTheme.colors.background) {
+                    BirthdayGreetingWithImage(getString(R.string.happy_birthday_text), getString(R.string.signature_text))
                 }
             }
         }
@@ -54,27 +54,49 @@ fun BirthdayGreetingWithText(message: String, from: String) {
     Column {
         Text(
             text = message,
-            fontSize = 36.sp
+            fontSize = 36.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .padding(start = 16.dp, top = 16.dp)
         )
 
         Text(
             text = from,
-            fontSize = 24.sp
+            fontSize = 24.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally)
+                .padding(start = 16.dp, end = 16.dp)
         )
     }
 }
 
 // 5. Box 레이아웃 추
 @Composable
-fun BirthdayGreetingWithImage(message: String, from: String) { }
+fun BirthdayGreetingWithImage(message: String, from: String) {
+    val image = painterResource(id = R.drawable.androidparty)
+
+    Box {
+        Image(
+            painter = image,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            contentScale = ContentScale.Crop
+        )
+        BirthdayGreetingWithText(message = message, from = from)
+    }
+}
 
 // 4. 이미지 컴포저블 추가
 @Preview(showBackground = false)
 @Composable
 private fun BirthdayCardPreview() {
     HappyBirthdayTheme {
-
-        BirthdayGreetingWithText(message = "Happy Birthday Sam!", from = "- from emma")
+        BirthdayGreetingWithImage(message = "Happy Birthday Sam!", from = "- from Emma")
+//        BirthdayGreetingWithText(message = "Happy Birthday Sam!", from = "- from emma")
     }
 }
 
